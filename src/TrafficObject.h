@@ -36,8 +36,6 @@ protected:
 
 private:
     static int _idCnt; // global variable for counting object ids
-    // Every object has its own unique counting variable 
-    // static => ensures that this variable is independent of instances of traffic object
-}; 
+};
 
 #endif
