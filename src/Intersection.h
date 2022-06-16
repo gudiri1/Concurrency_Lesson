@@ -3,12 +3,17 @@
 
 #include <vector>
 #include <future>
+#include <mutex>
 #include <memory>
 #include "TrafficObject.h"
+#include <thread>
+#include <algorithm>
 
 // forward declarations to avoid include cycle
 class Street;
 class Vehicle;
+
+
 
 // auxiliary class to queue and dequeue waiting vehicles in a thread-safe manner
 class WaitingVehicles
@@ -19,10 +24,15 @@ public:
 
     // typical behaviour methods
     void pushBack(std::shared_ptr<Vehicle> vehicle, std::promise<void> &&promise);
+
     void permitEntryToFirstInQueue();
+    
 
 private:
+    std::mutex _mutex;
+    
     std::vector<std::shared_ptr<Vehicle>> _vehicles;          // list of all vehicles waiting to enter this intersection
+    
     std::vector<std::promise<void>> _promises; // list of associated promises
 };
 
